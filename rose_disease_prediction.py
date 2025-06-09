@@ -421,6 +421,14 @@ def load_model():
                 st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}") # List files in script directory
                 st.info(f"Is model file now present? {os.path.exists(MODEL_PATH)}")
 
+                # Read and print the first few bytes of the downloaded file for inspection
+                try:
+                    with open(MODEL_PATH, 'rb') as f:
+                        first_bytes = f.read(100) # Read first 100 bytes
+                        st.info(f"First 100 bytes of downloaded model file: {first_bytes.decode('utf-8', errors='ignore')}")
+                except Exception as file_read_error:
+                    st.error(f"Error reading downloaded file for inspection: {file_read_error}")
+
             except requests.exceptions.RequestException as req_err:
                 st.error(f"Error downloading model: {req_err}")
                 st.error("Please ensure the model file is accessible from the provided URL and that the Streamlit app has write permissions.")
