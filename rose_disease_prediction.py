@@ -410,11 +410,8 @@ def load_model():
         if not os.path.exists(MODEL_PATH):
             st.warning("Model file not found locally. Attempting to download...")
             try:
-                with st.spinner("Downloading model (this may take a moment)...
-" \
-                                f"Downloading from: {MODEL_DOWNLOAD_URL}
-" \
-                                f"Saving to: {MODEL_PATH}"):
+                spinner_message = "Downloading model..."
+                with st.spinner(spinner_message):
                     response = requests.get(MODEL_DOWNLOAD_URL, stream=True)
                     response.raise_for_status() # Raise an exception for HTTP errors
                     with open(MODEL_PATH, "wb") as f:
