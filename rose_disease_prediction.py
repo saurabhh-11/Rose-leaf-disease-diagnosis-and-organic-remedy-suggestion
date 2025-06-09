@@ -24,10 +24,10 @@ except ImportError:
     st.warning("OpenCV not available, using PIL for image processing. Some image processing features might be limited.")
 
 # Constants
-MODEL_FILENAME = "custom_cnn_rose_disease_model.h5"
+MODEL_FILENAME = "incpv3model.keras"
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_FILENAME)
 # Direct URL to the raw model file from your Google Drive
-MODEL_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1Z9r6dkI_7nu90NTs_q4vwJfmktyra3g_"
+MODEL_DOWNLOAD_URL = "https://drive.google.com/file/d/1sGKPTShvbXVZoZs6mzpk3M0nuZICP_Mo/view?usp=drive_link"
 
 # Language dictionaries
 LANGUAGES = {
