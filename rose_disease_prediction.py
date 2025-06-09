@@ -280,7 +280,7 @@ def load_model():
                     for chunk in response.iter_content(chunk_size=8192):
                         f.write(chunk)
             st.success("Model downloaded successfully!")
-            st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}) # List files in script directory
+            st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}") # List files in script directory
             st.info(f"Is model file now present? {os.path.exists(MODEL_PATH)}")
 
             # Read and print the first few bytes of the downloaded file for inspection
