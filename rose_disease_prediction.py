@@ -27,7 +27,7 @@ except ImportError:
 MODEL_FILENAME = "custom_cnn_rose_disease_model.h5"
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_FILENAME)
 # Direct URL to the raw model file in your GitHub repository
-MODEL_DOWNLOAD_URL = "https://raw.githubusercontent.com/saurabhh-11/Rose-leaf-disease-diagnosis-and-organic-remedy-suggestion/main/custom_cnn_rose_disease_model.h5"
+MODEL_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1Z9r6dkI_7nu90NTs_q4vwJfmktyra3g_"
 
 # Language dictionaries
 LANGUAGES = {
