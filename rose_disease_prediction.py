@@ -13,6 +13,7 @@ import numpy as np
 from PIL import Image
 import os
 import textwrap
+import requests # Added for downloading the model file
 
 # Try importing OpenCV, if not available, use PIL for image processing
 try:
@@ -23,7 +24,10 @@ except ImportError:
     st.warning("OpenCV not available, using PIL for image processing")
 
 # Constants
-MODEL_PATH = "custom_cnn_rose_disease_model.h5"  # Model file in the same directory
+MODEL_FILENAME = "custom_cnn_rose_disease_model.h5"
+MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_FILENAME)
+# Direct URL to the raw model file in your GitHub repository
+MODEL_DOWNLOAD_URL = "https://raw.githubusercontent.com/saurabhh-11/Rose-leaf-disease-diagnosis-and-organic-remedy-suggestion/main/custom_cnn_rose_disease_model.h5"
 
 # Language dictionaries
 LANGUAGES = {
@@ -397,23 +401,40 @@ st.markdown("""
 
 def load_model():
     try:
-        # Check if model file exists
-        if not os.path.exists(MODEL_PATH):
-            st.error("⚠️ Model file not found!")
-            st.error("The model file 'custom_cnn_rose_disease_model.h5' is missing from your repository.")
-            st.error("To fix this:")
-            st.error("1. Make sure you've cloned the entire repository including the model file")
-            st.error("2. The model file should be in the same directory as this script")
-            st.error("3. Check if the file name matches exactly: 'custom_cnn_rose_disease_model.h5'")
-            
-            st.info("Current directory contents:")
-            for file in os.listdir():
-                st.info(f"- {file}")
-            return None
+        st.info(f"Checking for model file at: {MODEL_PATH}")
+        st.info(f"Current script directory: {os.path.dirname(os.path.abspath(__file__))}")
+        st.info(f"Current working directory (os.getcwd()): {os.getcwd()}")
+        st.info(f"Files in current working directory: {os.listdir('.')}") # List files in CWD
 
-        # Check if file is empty
+        # Check if model file exists locally
+        if not os.path.exists(MODEL_PATH):
+            st.warning("Model file not found locally. Attempting to download...")
+            try:
+                with st.spinner("Downloading model (this may take a moment)...
+" \
+                                f"Downloading from: {MODEL_DOWNLOAD_URL}
+" \
+                                f"Saving to: {MODEL_PATH}"):
+                    response = requests.get(MODEL_DOWNLOAD_URL, stream=True)
+                    response.raise_for_status() # Raise an exception for HTTP errors
+                    with open(MODEL_PATH, "wb") as f:
+                        for chunk in response.iter_content(chunk_size=8192):
+                            f.write(chunk)
+                st.success("Model downloaded successfully!")
+                st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}") # List files in script directory
+                st.info(f"Is model file now present? {os.path.exists(MODEL_PATH)}")
+
+            except requests.exceptions.RequestException as req_err:
+                st.error(f"Error downloading model: {req_err}")
+                st.error("Please ensure the model file is accessible from the provided URL and that the Streamlit app has write permissions.")
+                return None
+            except Exception as e:
+                st.error(f"An unexpected error occurred during download: {e}")
+                return None
+
+        # Check if file is empty after ensuring it exists (either locally or after download)
         if os.path.getsize(MODEL_PATH) == 0:
-            st.error("Model file is empty. Please check if the file is corrupted.")
+            st.error("Model file is empty. Please check if the file is corrupted or download failed.")
             return None
 
         # Try to load the model
