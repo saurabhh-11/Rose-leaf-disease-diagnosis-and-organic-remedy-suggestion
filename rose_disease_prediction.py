@@ -23,7 +23,7 @@ except ImportError:
     st.warning("OpenCV not available, using PIL for image processing")
 
 # Constants
-MODEL_PATH = os.path.join(os.path.dirname(__file__), "custom_cnn_rose_disease_model.h5")
+MODEL_PATH = "custom_cnn_rose_disease_model.h5"  # Model file in the same directory
 
 # Language dictionaries
 LANGUAGES = {
@@ -402,11 +402,9 @@ def load_model():
             st.error("⚠️ Model file not found!")
             st.error("The model file 'custom_cnn_rose_disease_model.h5' is missing from your repository.")
             st.error("To fix this:")
-            st.error("1. Download the model file from your local machine")
-            st.error("2. Add it to your GitHub repository in the same directory as this script")
-            st.error("3. Make sure the file name is exactly: 'custom_cnn_rose_disease_model.h5'")
-            st.error("4. Commit and push the changes to GitHub")
-            st.error("5. Redeploy your Streamlit app")
+            st.error("1. Make sure you've cloned the entire repository including the model file")
+            st.error("2. The model file should be in the same directory as this script")
+            st.error("3. Check if the file name matches exactly: 'custom_cnn_rose_disease_model.h5'")
             
             st.info("Current directory contents:")
             for file in os.listdir():
