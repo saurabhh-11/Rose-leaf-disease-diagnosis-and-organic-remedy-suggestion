@@ -1,4 +1,5 @@
-🌿 Rose Leaf Disease Diagnosis & Remedy Recommendation An AI-powered tool that detects rose leaf diseases and recommends organic treatments for sustainable farming. 🌱
+🌿 **Rose Leaf Disease Diagnosis & Remedy Recommendation **
+An AI-powered tool that detects rose leaf diseases and recommends organic treatments for sustainable farming. 🌱
 
 🚀 Key Features Detects 6+ diseases (e.g., black spot, powdery mildew, rust)
 Multi-language support such as English,Marathi,Hindi
