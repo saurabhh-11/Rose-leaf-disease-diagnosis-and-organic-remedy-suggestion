@@ -406,36 +406,35 @@ def load_model():
         st.info(f"Current working directory (os.getcwd()): {os.getcwd()}")
         st.info(f"Files in current working directory: {os.listdir('.')}") # List files in CWD
 
-        # Check if model file exists locally
-        if not os.path.exists(MODEL_PATH):
-            st.warning("Model file not found locally. Attempting to download...")
+        st.warning("Attempting to download/overwrite model file from Google Drive...")
+        try:
+            with st.spinner(f"""Downloading model (this may take a moment)...
+                            Downloading from: {MODEL_DOWNLOAD_URL}
+                            Saving to: {MODEL_PATH}"""):
+                response = requests.get(MODEL_DOWNLOAD_URL, stream=True)
+                response.raise_for_status() # Raise an exception for HTTP errors
+                with open(MODEL_PATH, "wb") as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        f.write(chunk)
+            st.success("Model downloaded successfully!")
+            st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}") # List files in script directory
+            st.info(f"Is model file now present? {os.path.exists(MODEL_PATH)}")
+
+            # Read and print the first few bytes of the downloaded file for inspection
             try:
-                spinner_message = "Downloading model..."
-                with st.spinner(spinner_message):
-                    response = requests.get(MODEL_DOWNLOAD_URL, stream=True)
-                    response.raise_for_status() # Raise an exception for HTTP errors
-                    with open(MODEL_PATH, "wb") as f:
-                        for chunk in response.iter_content(chunk_size=8192):
-                            f.write(chunk)
-                st.success("Model downloaded successfully!")
-                st.info(f"Files in script directory after download: {os.listdir(os.path.dirname(os.path.abspath(__file__)))}") # List files in script directory
-                st.info(f"Is model file now present? {os.path.exists(MODEL_PATH)}")
+                with open(MODEL_PATH, 'rb') as f:
+                    first_bytes = f.read(100) # Read first 100 bytes
+                    st.info(f"First 100 bytes of downloaded model file: {first_bytes.decode('utf-8', errors='ignore')}")
+            except Exception as file_read_error:
+                st.error(f"Error reading downloaded file for inspection: {file_read_error}")
 
-                # Read and print the first few bytes of the downloaded file for inspection
-                try:
-                    with open(MODEL_PATH, 'rb') as f:
-                        first_bytes = f.read(100) # Read first 100 bytes
-                        st.info(f"First 100 bytes of downloaded model file: {first_bytes.decode('utf-8', errors='ignore')}")
-                except Exception as file_read_error:
-                    st.error(f"Error reading downloaded file for inspection: {file_read_error}")
-
-            except requests.exceptions.RequestException as req_err:
-                st.error(f"Error downloading model: {req_err}")
-                st.error("Please ensure the model file is accessible from the provided URL and that the Streamlit app has write permissions.")
-                return None
-            except Exception as e:
-                st.error(f"An unexpected error occurred during download: {e}")
-                return None
+        except requests.exceptions.RequestException as req_err:
+            st.error(f"Error downloading model: {req_err}")
+            st.error("Please ensure the model file is accessible from the provided URL and that the Streamlit app has write permissions.")
+            return None
+        except Exception as e:
+            st.error(f"An unexpected error occurred during download: {e}")
+            return None
 
         # Check if file is empty after ensuring it exists (either locally or after download)
         if os.path.getsize(MODEL_PATH) == 0:
