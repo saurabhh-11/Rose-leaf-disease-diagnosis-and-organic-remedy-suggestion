@@ -21,12 +21,12 @@ try:
     USE_CV2 = True
 except ImportError:
     USE_CV2 = False
-    st.warning("OpenCV not available, using PIL for image processing")
+    st.warning("OpenCV not available, using PIL for image processing. Some image processing features might be limited.")
 
 # Constants
 MODEL_FILENAME = "custom_cnn_rose_disease_model.h5"
 MODEL_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), MODEL_FILENAME)
-# Direct URL to the raw model file in your GitHub repository
+# Direct URL to the raw model file from your Google Drive
 MODEL_DOWNLOAD_URL = "https://drive.google.com/uc?export=download&id=1Z9r6dkI_7nu90NTs_q4vwJfmktyra3g_"
 
 # Language dictionaries
@@ -430,7 +430,7 @@ def load_model():
 
         except requests.exceptions.RequestException as req_err:
             st.error(f"Error downloading model: {req_err}")
-            st.error("Please ensure the model file is accessible from the provided URL and that the Streamlit app has write permissions.")
+            st.error("Please ensure the Google Drive link is accessible and provides a direct download of the binary file, and that the Streamlit app has write permissions.")
             return None
         except Exception as e:
             st.error(f"An unexpected error occurred during download: {e}")
@@ -679,7 +679,7 @@ def main():
             f'<div class="instruction-title">{T["instruction_1"]}</div>'
             f'<div class="instruction-content">'
             f'<ul>'
-            f'{"".join(instruction_1_items)}'
+            f'{" ".join(instruction_1_items)}'
             f'</ul>'
             f'</div>'
             f'</div>'
@@ -687,7 +687,7 @@ def main():
             f'<div class="instruction-title">{T["instruction_2"]}</div>'
             f'<div class="instruction-content">'
             f'<ul>'
-            f'{"".join(instruction_2_items)}'
+            f'{" ".join(instruction_2_items)}'
             f'</ul>'
             f'</div>'
             f'</div>'
@@ -695,7 +695,7 @@ def main():
             f'<div class="instruction-title">{T["instruction_3"]}</div>'
             f'<div class="instruction-content">'
             f'<ul>'
-            f'{"".join(instruction_3_items)}'
+            f'{" ".join(instruction_3_items)}'
             f'</ul>'
             f'</div>'
             f'</div>'
@@ -712,7 +712,7 @@ def main():
             f'<div class="instruction-title">{T["photo_tips"]}</div>'
             f'<div class="instruction-content">'
             f'<ul>'
-            f'{"".join(tips_content_items)}'
+            f'{" ".join(tips_content_items)}'
             f'</ul>'
             f'</div>'
             f'</div>'
@@ -720,7 +720,7 @@ def main():
             f'<div class="instruction-title">{T["best_practices"]}</div>'
             f'<div class="instruction-content">'
             f'<ul>'
-            f'{"".join(best_practices_items)}'
+            f'{" ".join(best_practices_items)}'
             f'</ul>'
             f'</div>'
             f'</div>'
